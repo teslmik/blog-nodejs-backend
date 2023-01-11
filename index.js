@@ -37,7 +37,7 @@ app.post('/auth/login', loginValidation, handleValidationErrors, UserController.
 app.post('/auth/register', registerValidation, handleValidationErrors, UserController.register);
 app.get('/auth/me', checkAuth, UserController.getMe);
 
-app.post('/upload', checkAuth, upload.single('image'), (req, res) => res.json({ url: `uploads/${req.file.originalname}` }));
+app.post('/upload', checkAuth, upload.single('image'), (req, res) => res.json({ url: `/uploads/${req.file.originalname}` }));
 
 app.get('/posts', PostController.getAll);
 app.get('/tags', PostController.getLastTags);
