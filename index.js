@@ -9,7 +9,7 @@ import { checkAuth, handleValidationErrors } from './utils/index.js';
 import { UserController, PostController } from './controllers/index.js';
 
 mongoose
-  .connect(process.env.MONDODB_URI)
+  .connect(MONGODB_URI)
   .then(() => console.log('DB OK!'))
   .catch((err) => console.log('DB Error', err));
 
@@ -37,7 +37,7 @@ app.post('/auth/login', loginValidation, handleValidationErrors, UserController.
 app.post('/auth/register', registerValidation, handleValidationErrors, UserController.register);
 app.get('/auth/me', checkAuth, UserController.getMe);
 
-app.post('/upload', checkAuth, upload.single('image'), (req, res) => res.json({ url: `/uploads/${req.file.originalname}` }));
+app.post('/upload', checkAuth, upload.single('image'), (req, res) => res.json({ url: `uploads/${req.file.originalname}` }));
 
 app.get('/posts', PostController.getAll);
 app.get('/tags', PostController.getLastTags);
@@ -46,7 +46,9 @@ app.post('/posts', checkAuth, postCreateValidation, handleValidationErrors, Post
 app.delete('/posts/:id', checkAuth, PostController.remove);
 app.patch('/posts/:id', checkAuth, postCreateValidation, handleValidationErrors, PostController.update);
 
-app.listen(process.env.PORT || 4444, (err) => {
+const port = process.env.PORT || 4444;
+
+app.listen(port, (err) => {
   if (err) {
     return console.log(err);
   }
